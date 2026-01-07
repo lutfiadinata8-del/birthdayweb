@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday 🎉</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    .hearts span {
+    font-size: 35px;
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+.hearts span.clicked {
+    animation: pop 0.4s ease;
+    filter: drop-shadow(0 0 8px pink);
+}
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.6); }
+    100% { transform: scale(1); }
+}
+    .firework {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
+}
+    .rocket {
+    position: fixed;
+    bottom: 0;
+    width: 4px;
+    height: 15px;
+    background: white;
+    left: 50%;
+    animation: fly 1s ease-out forwards;
+    z-index: 1;   /* 👈 BELAKANG */
+}
+
+@keyframes fly {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-70vh);
+    }
+}
+
+.explosion {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 1s ease-out forwards;
+    forwards;
+    z-index: 1;   /* 👈 BELAKANG */
+}
+    .screen {
+    position: relative;
+    z-index: 5;   /* 👈 TEKS DI DEPAN */
+}
+
+@keyframes explode {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(18);
+        opacity: 0;
+    }
+}
+    
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+.screen { display: none; width: 100%; padding: 20px; }
+.active { display: block; }
+button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.hearts span {
+    font-size: 35px;
+    cursor: pointer;
+    margin: 5px;
+}
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 200px;
+    text-align: center;
+}
+.gift {
+    font-size: 80px;
+    cursor: pointer;
+}
+img {
+    width: 150px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Screen 1 -->
+<div class="screen active" id="s1">
+    <h1 style="font-size:80px;">🎁🎁🎁</h1>
+    <h2>alooww <span id="name1">Zulaeyka F. Zahra</span> 💐💐</h2>
+    <p>aku ada hadiah spesial ni buat kamu!! 🎁🩰</p>
+    <button onclick="next(2)">Click to Continue</button>
+</div>
+
+<!-- Screen 2 -->
+<div class="screen" id="s2">
+    <h1 style="font-size:80px;">🐋🌊💧</h1>
+    <p>for uu 🌚</p>
+    <div class="hearts">
+        <span onclick="love(this)">🤍</span>
+        <span onclick="love(this)">🩵</span>
+        <span onclick="love(this)">🤍</span>
+        <span onclick="love(this)">🩵</span>
+      <p>click 4 love nya dulu</p>
+    </div>
+</div>
+
+<!-- Screen 3 -->
+<div class="screen" id="s3">
+    <h3>Enter Your Name</h3>
+    <input id="username" placeholder="tulis nama">
+    <br><br>
+    <button onclick="saveName()">OK</button>
+</div>
+
+<!-- Screen 4 -->
+<div class="screen" id="s4">
+    <div class="gift" onclick="next(5); startFireworks()">🎁</div>
+    <p>Click the Gift!</p>
+</div>
+
+<!-- Screen 5 -->
+<div class="screen" id="s5">
+    <h1 style="font-size:40px;">to my soul, yayaa.</h1>
+    <h2>aloow, <span id="name2"></span> ✨</h2>
+    <p>Happy Birthday untukmuu, <span id="name3"></span> 🎆🎇🎈🎀🎉</p>
+    <p>aku berharap kamu disana baik-baik saja, sehat selalu dan tetap indah seperti yaya yang ku kenal dulu</p>
+    <p>ini ucapan dari nala ke yaya, aku berharap yaya tetap bahagia disana</p>
+    <p>aku adalah orang yang selalu bangga atas pencapaianmu. atas semua hal ini, nala ucapkan terimakasih. </p>
+</div>
+
+<script>
+    
+let loveCount = 0;
+
+function next(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+}
+
+function love(el) {
+    if (!el.classList.contains('clicked')) {
+        el.classList.add('clicked');
+        loveCount++;
+        if (loveCount === 4) setTimeout(() => next(3), 500);
+    }
+}
+
+function saveName() {
+    let input = document.getElementById("username");
+    let name = input.value.toLowerCase().trim();
+
+    if (name === "raya dan atma") {
+        document.getElementById("name1").innerText = "yayaa";
+        document.getElementById("name2").innerText = "rayaa";
+        document.getElementById("name3").innerText = "rayaa!!";
+        next(4);
+    } else {
+        alert("lah bukannya nalaya 🤔🤔\nCoba ketik: raya dan atma");
+        input.value = "";
+        input.focus();
+    }
+}
+    function launchFirework() {
+    const rocket = document.createElement("div");
+    rocket.className = "rocket";
+    rocket.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(rocket);
+
+    setTimeout(() => {
+        rocket.remove();
+        explodeFirework(
+            parseFloat(rocket.style.left),
+            window.innerHeight * 0.3 + Math.random() * 100
+        );
+    }, 1000);
+}
+
+function explodeFirework(x, y) {
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement("div");
+        p.className = "explosion";
+        p.style.left = x + "px";
+        p.style.top = y + "px";
+        p.style.backgroundColor =
+            `hsl(${Math.random() * 360}, 100%, 50%)`;
+
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+    }
+}
+
+function startFireworks() {
+    setInterval(launchFirework, 700);
+}
+</script>
+
+</body>
+</html>
